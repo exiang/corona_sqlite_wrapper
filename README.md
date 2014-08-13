@@ -13,7 +13,8 @@ Insert the following required header at the top of your main.lua:
 ```
 _ = require("lib.underscore")
 inspect = require("lib.inspect")
-dbi = require("lib.dbi")```
+dbi = require("lib.dbi")
+```
 
 **Init DB**
 ```
@@ -60,6 +61,6 @@ dbi:exists(db, "superhero", {code="agent"})
 
 
 
-Dependancies:
+**Dependancies**
 - underscore: http://mirven.github.io/underscore.lua/
 - inspect(optional): http://github.com/kikito/inspect.lua
