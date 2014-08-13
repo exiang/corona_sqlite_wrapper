@@ -1,37 +1,14 @@
 -- to tell lua to search in lib sub folder
 --package.path = './lib/?.lua;' .. package.path
-util = require( "lib.util" )
 _ = require("lib.underscore")
 inspect = require("lib.inspect")
 dbi = require("lib.dbi")
 -- using self define class
 
-print("loaded?" )
-print(package.loaded.dbi)
-
-util:helloWorld()
-util:helloWorld("yee siang")
--- the following function call will not work bcs that's a local private function
---util:_printHelloWorld("yee siang")
-
-print("sum of 10 and 2 is ".. util:sum(10, 2))
-
--- using underscore
--- doc available here at - http://mirven.github.io/underscore.lua
---print(_.max({1,2,3,4}) )
-
--- using underscore function in util
-util:max({1,2,3,4})
-
-if(util:testConnection()) then
-	print("got internet connection..")
-else
-	print("no internet connection..")
-end
-
 local db = dbi:init("data.db")
 
 -- create table, execute raw sql
+print("-- create table if not exists...")
 dbi:exec(db, [[CREATE TABLE IF NOT EXISTS superhero (id INTEGER PRIMARY KEY, code UNIQUE, name, level INTEGER, isTraining INTEGER);]] )
 
 -- insert data
@@ -43,7 +20,7 @@ dbi:insert(db, "superhero", {code="hawkeye", name="Hawkeye", level=9, isTraining
 print()
 
 -- update data
-print("--update agent...")
+print("--update: agent to level-185 & haweye to level-10...")
 dbi:update(db, "superhero", [[code='agent']], {level=185, isTraining=1})
 local code2update = "hawkeye"
 dbi:update(db, "superhero", dbi:bind([[code=_code_]], {_code_=code2update}), {level=10})
@@ -52,7 +29,6 @@ print()
 -- get a row data
 print("--get superhero agent")
 row = dbi:getRow(db, "SELECT * FROM superhero WHERE code=_code_ limit 1", {_code_='agent'})
-local outputText = row.code..": lvl-"..row.level
 print(row.code..": lvl-"..row.level)
 print()
 
@@ -71,7 +47,7 @@ print()
 -- select data traiditional way...
 print("--get all superheroes in traditional method:")
 for row in db:nrows("SELECT * FROM superhero") do
-    local text = row.code..": lvl-"..row.level .. " training-"..util:getString(row.isTraining)
+    local text = row.code..": lvl-"..row.level .. " training-"..tostring(row.isTraining)
 	print(text)
 end
 
@@ -80,5 +56,5 @@ print("hero with code 'agent': ".. tostring(dbi:exists(db, "superhero", {code="a
 print("hero with code 'hulk': ".. tostring(dbi:exists(db, "superhero", {code="hulk"})))
 print()
 
-local myText = display.newText( outputText, display.contentCenterX, display.contentCenterY, native.systemFont, 32 )
+local myText = display.newText("Please check the console window for output", display.contentCenterX, display.contentCenterY, native.systemFont, 64 )
 myText:setFillColor( 1, 1, 1 )
