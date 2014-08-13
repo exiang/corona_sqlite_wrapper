@@ -4,9 +4,10 @@ corona_sqlite_wrapper
 Sqlite Wrapper for Coronalab.
 
 It aims to help making database call in coronalab easier thru functions.
-For examples:
 
-**Require**
+## For examples:
+
+### Require
 
 Insert the following required header at the top of your main.lua:
 
@@ -16,25 +17,25 @@ inspect = require("lib.inspect")
 dbi = require("lib.dbi")
 ```
 
-**Init DB**
+### Init DB
 
 ```
 dbi:exec(db, [[CREATE TABLE IF NOT EXISTS superhero (id INTEGER PRIMARY KEY, code UNIQUE, name, level INTEGER, isTraining INTEGER);]] )
 ```
 
-** Insert **
+### Insert
 
 ```
 dbi:insert(db, "superhero", {code="agent", name="Agent Tan", level=182, isTraining=true})
 ```
 
-** Update **
+### Update
 
 ```
 dbi:update(db, "superhero", [[code='agent']], {level=185, isTraining=1})
 ```
 
-** Get a Row **
+### Get Single Row
 
 ```
 row = dbi:getRow(db, "SELECT * FROM superhero WHERE code=_code_ limit 1", {_code_='agent'})
@@ -42,7 +43,7 @@ print(row.code..": lvl-"..row.level)
 ```
 
 
-** Get All **
+### Get All
 
 ```
 rows = dbi:getAll(db, "SELECT * FROM superhero WHERE isTraining=_isTraining_", {_isTraining_=true})
@@ -50,7 +51,7 @@ _.each(rows, function(row) print(row.code..": lvl-"..row.level) end)
 ```
 
 
-** Or tradionally **
+### or Traditionally
 
 ```
 for row in db:nrows("SELECT * FROM superhero") do
@@ -59,7 +60,7 @@ for row in db:nrows("SELECT * FROM superhero") do
 end
 ```
 
-** Is Exists? **
+### is Exists?
 
 ```
 dbi:exists(db, "superhero", {code="agent"})
@@ -68,6 +69,6 @@ dbi:exists(db, "superhero", {code="agent"})
 
 
 
-**Dependancies**
+## Dependencies
 - underscore: http://mirven.github.io/underscore.lua/
 - inspect(optional): http://github.com/kikito/inspect.lua
